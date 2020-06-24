@@ -31,7 +31,6 @@ public class LoginBot extends AbstractBot {
 	private void login() {
 		
 		System.out.print("Enter account Number:");
-		Input.getStringInput();// TODO: Figure out why we have to do this!
 		String accNumber = Input.getStringInput();
 		
 		  try { if(Integer.parseInt(accNumber)== -1)

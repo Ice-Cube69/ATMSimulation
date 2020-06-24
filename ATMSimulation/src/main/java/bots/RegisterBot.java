@@ -12,7 +12,6 @@ public class RegisterBot extends AbstractBot {
     @Override
     public void startup() {
         System.out.println("Enter name: ");
-        Input.getStringInput();// TODO: Delete the below statement
         String name = Input.getStringInput();
         dataManager = new DataManager();
         

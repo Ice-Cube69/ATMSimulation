@@ -26,6 +26,7 @@ public class Input {
 	
 	public static String getStringInput() 
 	{
+		scanner.nextLine();
 		String input = new String(scanner.nextLine());
 		return input;
 	}
