@@ -127,5 +127,12 @@ public class DataManager {
 		return true;
 		
 	}
+
+	public String getName(Session session) throws SQLException, Exception
+	{
+		ResultSet result = executeQuery("SELECT name from customers where account_number = " + session.getAccNumber());
+		result.next();
+		return result.getString(1);
+	}
 	
 }

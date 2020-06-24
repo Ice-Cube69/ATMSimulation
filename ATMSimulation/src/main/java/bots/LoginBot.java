@@ -43,9 +43,13 @@ public class LoginBot extends AbstractBot {
 
 		System.out.println("Enter Pin: ");
 		int pin = Input.getIntInput();
+
+		Session session = new Session(accNumber, pin);
 		try {
+
+
 			if (dataManager.login(accNumber, pin)) {
-				System.out.println("Login sucessful!");
+				System.out.println("Welcome, " + dataManager.getName(session) + "!");
 				
 				FinancialBot FinancialBot = new FinancialBot(new Session(accNumber, pin));
 				FinancialBot.startup();
