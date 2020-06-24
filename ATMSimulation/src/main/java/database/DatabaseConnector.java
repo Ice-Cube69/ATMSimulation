@@ -22,7 +22,7 @@ public class DatabaseConnector
 	
 	public static void init() throws SQLException {
 		isInit = true;
-		String DATABASE_URL = "jdbc:mysql://localhost:3306/java";
+		String DATABASE_URL = "jdbc:mysql://localhost:3306/java?autoReconnect=true&useSSL=false";
 		connection = DriverManager.getConnection(DATABASE_URL, "root", "1234");
 		
 	}

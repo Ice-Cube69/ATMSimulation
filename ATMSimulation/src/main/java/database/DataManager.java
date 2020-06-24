@@ -2,6 +2,7 @@ package database;
 
 import static database.DatabaseConnector.*;
 
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +22,42 @@ public class DataManager {
 			Statement statement = getConnection().createStatement();
 			ResultSet result = statement.executeQuery(QUERY);
 			return result;
+	}
+	
+	public int executeUpdate(String QUERY) throws SQLException, Exception {
+		Statement statement = getConnection().createStatement();
+		int result = statement.executeUpdate(QUERY);
+		return result;
+}
+	
+	public void register(String name) throws SQLException, Exception
+	{
+		// TODO: Make register method
+		
+		// Let us make a random generated account_number and pin
+		SecureRandom random = new SecureRandom();
+		String accNumber;
+
+		// We are checking wether this account number exists or not
+		while(true){
+			accNumber = String.valueOf(random.nextInt(10000)) + String.valueOf(random.nextInt(10000))
+		 + String.valueOf(random.nextInt(10000));
+		 
+			ResultSet result = executeQuery("SELECT * FROM customers where account_number = " + accNumber);
+
+			if(!result.next())// if result set is empty, we will break from the loop
+			{
+				break;
+			}
+
+		}
+
+		 int pin = random.nextInt(10000);// generating a pin
+
+		 String QUERY = "INSERT INTO customers(account_number, name, pin) VALUES(" + accNumber + ", \'"  + name + "\', " + pin + ")";						  
+
+		 executeUpdate(QUERY);
+						 
 	}
 	
 	public boolean login(String accNumber, int pin) throws SQLException,Exception
@@ -45,7 +82,7 @@ public class DataManager {
 	
 	public void updateBalance(float newBalance, Session session) throws SQLException, Exception
 	{
-		executeQuery("UPDATE customers SET balance = " + newBalance + "WHERE account_number = " 
+		executeUpdate("UPDATE customers SET balance = " + newBalance + "WHERE account_number = " 
 	+ session.getAccNumber() + " and pin = " + session.getPin());
 		
 	}

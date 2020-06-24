@@ -16,7 +16,9 @@ public class IntroBot extends AbstractBot{
 	public void performTask(int x) {
 		switch (x) {
 		case 0:
-			System.out.println("Register");
+			System.out.println("Welcome to Register menu.");
+			RegisterBot registerBot = new RegisterBot();
+			registerBot.startup();
 			break;
 			
 		case 1:
