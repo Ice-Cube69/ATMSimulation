@@ -18,7 +18,6 @@ public class FinancialBot extends AbstractBot {
 
 	@Override
 	public void startup() {
-		// TODO: Make another option for sending money to a bank account
 
 		printOptions("Enter 1 to view balance: ", "Enter 2 to credit money: ", "Enter 3 to deposit money",
 				"Enter 4 to send money to another bank account.");
@@ -69,6 +68,20 @@ public class FinancialBot extends AbstractBot {
 				}
 			break;
 		case 4:
+		// Taking input from user about reciever
+		try{
+		System.out.println("Enter account number of reciever: ");
+		String accountNumberOfReciever = Input.getStringInput();
+
+		System.out.println("Enter amount of money to be transferred: ");
+		float money = Input.getScanner().nextFloat();
+		
+		dataManager.transferMoney(session, accountNumberOfReciever, money);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 			break;
 			
 			default:

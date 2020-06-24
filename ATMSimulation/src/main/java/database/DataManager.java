@@ -32,7 +32,6 @@ public class DataManager {
 	
 	public void register(String name) throws SQLException, Exception
 	{
-		// TODO: Make register method
 		
 		// Let us make a random generated account_number and pin
 		SecureRandom random = new SecureRandom();
@@ -79,11 +78,53 @@ public class DataManager {
 				return result.getFloat(1);
 		
 	}
+
+	public float getBalance(String accountNumber) throws SQLException, Exception
+	{
+		ResultSet result = executeQuery("select balance from customers "
+				+ "where account_number =" + accountNumber);
+				
+				result.next();
+				return result.getFloat(1);	
+	}
 	
 	public void updateBalance(float newBalance, Session session) throws SQLException, Exception
 	{
 		executeUpdate("UPDATE customers SET balance = " + newBalance + "WHERE account_number = " 
 	+ session.getAccNumber() + " and pin = " + session.getPin());
+		
+	}
+
+	public void updateBalance(float newBalance, String accountNumber) throws SQLException, Exception
+	{
+		executeUpdate("UPDATE customers SET balance = " + newBalance + "WHERE account_number = " + accountNumber);
+		
+	}
+
+	// if transaction was successfull, returns true, else returns false
+	public boolean transferMoney(Session session, String recieverAccountNumber, float money)
+			throws SQLException, Exception
+	{
+		if(getBalance(session) < money)
+		return false;
+
+		// Verifying if payment details are correct
+		ResultSet result1 = executeQuery("SELECT * FROM customers WHERE account_number = " + recieverAccountNumber);
+		if(!result1.next())
+		return false;
+		
+		float balanceOfPayer = getBalance(session);
+		balanceOfPayer -= money;
+
+		float balanceOfReciever = getBalance(recieverAccountNumber);
+		balanceOfReciever += money;
+
+		updateBalance(balanceOfPayer, session);
+		updateBalance(balanceOfReciever, recieverAccountNumber);
+
+		System.out.println("Transaction successful");
+
+		return true;
 		
 	}
 	
