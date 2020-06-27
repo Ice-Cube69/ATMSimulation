@@ -61,11 +61,23 @@ public class DataManager {
 	
 	public boolean login(String accNumber, int pin) throws SQLException,Exception
 	{
+		boolean correctCredentials = false;
+
 		ResultSet result = executeQuery("Select customers.pin from customers"
 										+ " where customers.account_number = " + accNumber);
+		try{
 		result.next();
-		
-		return result.getInt(1) == pin;
+
+		if(result.getInt(1) == pin)
+			correctCredentials = true;
+
+		}
+		catch(SQLException e)
+		{
+			correctCredentials = false;
+		}
+
+		return correctCredentials;
 		
 	}
 	

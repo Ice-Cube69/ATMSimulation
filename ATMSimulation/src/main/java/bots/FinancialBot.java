@@ -8,11 +8,13 @@ public class FinancialBot extends AbstractBot {
 
 	private Session session;
 	private DataManager dataManager;
+	private boolean exit;
 
 	public FinancialBot(Session session) {
 
 		this.session = session;
 		dataManager = new DataManager();
+		exit = false;
 
 	}
 
@@ -88,12 +90,16 @@ public class FinancialBot extends AbstractBot {
 				end();
 				return;
 		}
-		end();
 	}
 
 	@Override
 	public void end() {
 		System.out.println("Exiting from Financial menu...");
+		exit = true;
+	}
+
+	public boolean getExit(){
+		return exit;
 	}
 
 }

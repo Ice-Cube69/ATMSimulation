@@ -29,39 +29,42 @@ public class LoginBot extends AbstractBot {
 	}
 
 	private void login() {
-		
-		System.out.print("Enter account Number:");
-		String accNumber = Input.getStringInput();
-		
-		  try { if(Integer.parseInt(accNumber) == -1)
-			  return;// Checking if we want to exit
-		  
-		  } catch (NumberFormatException e) {
-			  // We are not printing as we do not want to print stacktrace if the user
-			  // did not enter '-1'
-		  
-		  }
-		 
+		while (true) {
+			System.out.print("Enter account Number:");
+			String accNumber = Input.getStringInput();
 
-		System.out.println("Enter Pin: ");
-		int pin = Input.getIntInput();
+			try {
+				if (Integer.parseInt(accNumber) == -1)
+					break;// Checking if we want to exit
 
-		Session session = new Session(accNumber, pin);
-		try {
+			} catch (NumberFormatException e) {
+				// We are not printing as we do not want to print stacktrace if the user
+				// did not enter '-1'
 
-
-			if (dataManager.login(accNumber, pin)) {
-				System.out.println("Welcome, " + dataManager.getName(session) + "!");
-				
-				FinancialBot financialBot = new FinancialBot(new Session(accNumber, pin));
-				financialBot.startup();
-				financialBot.performTask(Input.getIntInput());
-				
-			} else {
-				System.out.println("Wrong input, try again!(Enter -1 to exit in account number)");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			System.out.println("Enter Pin: ");
+			int pin = Input.getIntInput();
+
+			Session session = new Session(accNumber, pin);
+			try {
+
+				if (dataManager.login(accNumber, pin)) {
+					System.out.println("Welcome, " + dataManager.getName(session) + "!");
+
+					FinancialBot financialBot = new FinancialBot(new Session(accNumber, pin));
+					while(!financialBot.getExit())
+					{
+					financialBot.startup();
+					financialBot.performTask(Input.getIntInput());
+					}
+
+				} else {
+					System.out.println("Wrong input, try again!(Enter -1 to exit in account number)");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
